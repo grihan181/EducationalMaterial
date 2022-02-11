@@ -20,11 +20,9 @@ class Making {
 
     public int priorityOfOperator(char operator) {
         switch (operator) {
-            case '+':
-            case '-':
+            case '+', '-':
                 return 1;
-            case '*':
-            case '/':
+            case '*', '/':
                 return 2;
             default:
                 return 0;
