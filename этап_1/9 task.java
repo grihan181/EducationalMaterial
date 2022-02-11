@@ -9,7 +9,7 @@ public class Main {
         String strRev = strRevBuild.toString();
 
         System.out.println("\nПредложение ="+str);
-        System.out.println("Обратное ему ="+strRev);
+        System.out.println("Предложение наоборот ="+strRev);
 
         if (str.equals(strRev)) {
             System.out.println ("\nЭто полиндроп");
