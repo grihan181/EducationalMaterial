@@ -5,13 +5,13 @@ public class TaskNine {
         String str = "А роза упала на лапу Азора";
         str = str.toLowerCase();
         str = str.replaceAll(" ", "");
-        StringBuilder strRevBuild = new StringBuilder(str).reverse();
-        String strRev = strRevBuild.toString();
-
-        System.out.println("\nПредложение ="+str);
-        System.out.println("Предложение наоборот ="+strRev);
-
-        if (str.equals(strRev)) {
+        int j = str.length()-1;
+        boolean polindr = true;
+        for(int i = 0; i < str.length(); i++) {
+            if(str.charAt(i) != str.charAt(j)) { polindr = false; }
+            j--;
+        }
+        if (polindr == true) {
             System.out.println ("\nЭто полиндроп");
         }
         else {
