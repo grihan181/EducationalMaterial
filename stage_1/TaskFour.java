@@ -1,5 +1,5 @@
 package com.company;
-public class Main {
+public class TaskFour {
     public static void main(String[] args) {
         int[] mass =new int[30];
         int count = 0;

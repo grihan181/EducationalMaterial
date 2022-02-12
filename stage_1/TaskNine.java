@@ -1,6 +1,6 @@
 package com.company;
 
-public class Main {
+public class TaskNine {
     public static void main(String[] args) {
         String str = "А роза упала на лапу Азора";
         str = str.toLowerCase();

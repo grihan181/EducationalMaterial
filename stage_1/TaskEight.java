@@ -2,7 +2,7 @@ package com.company;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Main {
+public class TaskEight {
     public static void main(String[] args) {
         Making object = new Making();
         Scanner sc = new Scanner(System.in);

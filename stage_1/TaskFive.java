@@ -1,5 +1,5 @@
 package com.company;
-public class Main {
+public class TaskFive {
     public static void main(String[] args) {
         String str = "Hello world!";
         System.out.println("Выводим на экран посимвольно строку “Hello World!”, рядом с символом написан его числовой код");
