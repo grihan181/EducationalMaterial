@@ -11,7 +11,7 @@ public class TaskNine {
             if(str.charAt(i) != str.charAt(j)) { polindr = false; }
             j--;
         }
-        if (polindr == true) {
+        if (polindr) {
             System.out.println ("\nЭто полиндроп");
         }
         else {
