@@ -34,7 +34,9 @@ public class TaskThree {
                 electrodevices.add(createElectroDevice(choice));
             }
         }while (choice != 0);
+
         makeStatusOfElectrodevices(electrodevices);
+
       do  {
             choice = menu2();
                 switch (choice) {
@@ -128,7 +130,7 @@ public class TaskThree {
             case 4 -> new TV(wattage);
             case 5 -> new VacuumCleaner(wattage);
             case 6 -> new Conditioner(wattage);
-            default -> new Electrodevice();
+            default -> null;
         };
     }
     public static void makeStatusOfElectrodevices(ArrayList<Electrodevice> electrodevices) {

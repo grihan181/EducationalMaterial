@@ -1,6 +1,6 @@
 package com.company.TaskThree;
 
-public class Electrodevice implements Comparable<Electrodevice> {
+public abstract class  Electrodevice implements Comparable<Electrodevice> {
     private int wattage;
     private int status;
 
