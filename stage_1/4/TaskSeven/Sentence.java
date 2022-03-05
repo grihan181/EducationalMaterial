@@ -11,7 +11,7 @@ public class Sentence {
     }
     public ArrayList<String> getStringWords() {
         ArrayList<String> words = new ArrayList<String>();
-        for (int i = 1; i < getWordsCount(); i++) {
+        for (int i = 1; i <= getWordsCount(); i++) {
             words.add(getWordByPosition(i).getOriginalWord());
         }
         return words;
