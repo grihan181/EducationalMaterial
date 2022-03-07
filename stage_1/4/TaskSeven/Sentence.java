@@ -23,6 +23,7 @@ public class Sentence {
         this.words = words;
     }
 
+
     public  void setWordsFromString(String words) {
         String[] wordsArray = words.split(" ");
         for (String s : wordsArray) {
