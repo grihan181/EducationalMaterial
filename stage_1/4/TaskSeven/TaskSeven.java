@@ -41,7 +41,7 @@ public class TaskSeven {
         System.out.println("\nВсе выполнилось успешно!");
 
     }
-    public static void analizator(Sentence sentence) {
+    public static void analizator(Sentence sentence) throws IOException {
         int countWord = 0;
         int countVowelsWord = 0;
         int countConsonantsWord = 0;
@@ -70,15 +70,11 @@ public class TaskSeven {
         };
 
 
-        try {
             FileWriter writer = new FileWriter("result.txt");
             PrintWriter printWriter = new PrintWriter(writer);
             printWriter.printf("Анализ текста.\nВсего слов - %d\nИз них:\nC гласной - %d\nC согласной - %d",
                     countingWord.apply(countWord), countingVowelsWord.apply(countVowelsWord), countingConsonantsWord.apply(countConsonantsWord));
-
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 }
