@@ -1,0 +1,8 @@
+main\Labyrinth.class
+main\LabyrinthTable.class
+main\Point.class
+methods\BFS.class
+methods\DFS.class
+main\Operation.class
+main\PrettyPrinter.class
+main\ConnectionCreator.class
