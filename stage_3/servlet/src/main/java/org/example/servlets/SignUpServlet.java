@@ -1,5 +1,8 @@
 package org.example.servlets;
 
+import org.apache.log4j.Logger;
+import org.example.connection.ConnectionPool;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +16,7 @@ import java.sql.Statement;
 
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
+    final static Logger logger = Logger.getLogger(SignUpServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,7 +26,8 @@ public class SignUpServlet extends HttpServlet {
         String usernamesignup = req.getParameter("usernamesignup");
         String emailsignup = req.getParameter("emailsignup");
         try {
-        Connection connection = (Connection)req.getServletContext().getAttribute("dbConnection");
+
+            Connection connection = ConnectionPool.getInstance().getConnection();
         Statement stat = connection.createStatement();
         ResultSet rs = stat.executeQuery("SELECT * FROM USERS WHERE" +
                 " (USERNAME = '" + usernamesignup +"')" +
@@ -30,6 +35,7 @@ public class SignUpServlet extends HttpServlet {
         if(rs.next()) {
             req.setAttribute("textError", "Такое имя пользователя или почта уже используется");
             req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            connection.close();
             return;
         }
 
@@ -44,10 +50,10 @@ public class SignUpServlet extends HttpServlet {
                     "values('" + usernamesignup +
                     "', '" + builder +
                     "', '" + emailsignup + "');");
+            connection.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
-
         req.setAttribute("textError", "Поздравляю, вы зарегистрировали аккаунт!");
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
 

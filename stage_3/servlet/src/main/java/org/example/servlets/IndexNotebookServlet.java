@@ -1,7 +1,9 @@
 package org.example.servlets;
 
-import org.example.classes.Notebook;
-import org.example.classes.NotebookDB;
+import org.apache.log4j.Logger;
+import org.example.NotebookClasses.Notebook;
+import org.example.NotebookClasses.NotebookDB;
+import org.example.connection.ConnectionPool;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 
 @WebServlet(urlPatterns ="/main")
 public class IndexNotebookServlet extends HttpServlet {
+    final static Logger logger = Logger.getLogger(IndexNotebookServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -31,7 +35,7 @@ public class IndexNotebookServlet extends HttpServlet {
         String password = req.getParameter("password");
         long id;
 
-        Connection connection = (Connection)req.getServletContext().getAttribute("dbConnection");
+        Connection connection = ConnectionPool.getInstance().getConnection();
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] bytes = md5.digest(password.getBytes());
@@ -51,7 +55,7 @@ public class IndexNotebookServlet extends HttpServlet {
                 req.getSession().setAttribute("password", password);
                 req.getSession().setAttribute("username", username);
 
-                ArrayList<Notebook> notebooks = NotebookDB.select(id, req);
+                ArrayList<Notebook> notebooks =  ((NotebookDB) req.getServletContext().getAttribute("notebookBD")).select(id, req);
                 ArrayList<String> textAlerts = new ArrayList<>();
                 for(Notebook notebook : notebooks) {
                     if(notebook.getReminder() != null) {
@@ -79,8 +83,14 @@ public class IndexNotebookServlet extends HttpServlet {
                 req.setAttribute("textError", "Неправильный логин или пароль");
                 req.getRequestDispatcher("/index.jsp").forward(req, resp);
             }
+            logger.info("Пользователь " + username + " вошел");
         } catch (Exception e) {
-            e.printStackTrace();
+          logger.error(e);
+        }
+        try {
+            ConnectionPool.closeConnection(connection);
+        } catch (SQLException e) {
+            logger.error(e);
         }
     }
 

@@ -1,35 +1,27 @@
 package org.example.listener;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.servlet.ServletContext;
+import org.apache.log4j.Logger;
+import org.example.NotebookClasses.NotebookDB;
+import org.example.connection.ConnectionPool;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;
 
 
 @WebListener
 public class HttpListener implements  ServletContextListener {
-    private Connection connection;
+    final static Logger logger = Logger.getLogger(HttpListener.class);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ServletContext context = sce.getServletContext();
-        Context initCx = null;
         try {
-            initCx = new InitialContext();
-        Context envCtx = (Context) initCx.lookup("java:comp/env");
-        DataSource ds = (DataSource) envCtx.lookup("jdbc/notebookDB");
+            NotebookDB notebookDB = NotebookDB.getInstance();
 
-
-            Connection connection = ds.getConnection();
-            context.setAttribute("dbConnection", connection);
-
-            context.setAttribute("dbConnection", connection);
-
+            sce.getServletContext().setAttribute("notebookBD", notebookDB);
+            Connection connection = ConnectionPool.getInstance().getConnection();
             Statement stat;
             stat = connection.createStatement();
             stat.execute("CREATE TABLE IF NOT EXISTS Users(" +
@@ -48,21 +40,13 @@ public class HttpListener implements  ServletContextListener {
                     "REMINDER VARCHAR(255)," +
                     "USERS_ID BIGINT," +
                     "FOREIGN KEY (USERS_ID) REFERENCES Users(ID));");
+            ConnectionPool.closeConnection(connection);
 
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        try {
-            ((Connection)sce.getServletContext().getAttribute("dbConnection")).close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+           logger.error(e);
         }
     }
 }
+
 
 
